@@ -1,0 +1,15 @@
+# roles/webserver/tasks/main.yml
+---
+- name: "Task 1: Install Nginx"
+  ansible.builtin.apt:
+    name: nginx
+    state: present
+
+- name: "Task 2: Copy Nginx configuration file"
+  ansible.builtin.template:
+    src: "nginx.conf.j2"
+    dest: "/etc/nginx/sites-available/default"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: "Restart Nginx"

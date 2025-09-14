@@ -1,0 +1,20 @@
+
+---
+- name: "deploy aplication"
+  hosts: webservers
+  become: yes
+  tasks:
+    - name "clone the aplication from git"
+      ansible.builtin.git:
+        repo: "https://github.com/bruno-hsl/Automacao-de-Infraestrutura-com-Ansible.git"
+        dest: "/var/www/html/automatizacao.ansible"
+        version: "main"
+        force: yes
+
+    - name: "Set permissions for the aplication directory"
+      ansible.builtin.file:
+        path: "/var/www/html/automatizacao.ansible"
+        state: "directory"
+        owner: "www-data"
+        group: "www-data"
+        recurse: yes

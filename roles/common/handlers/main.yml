@@ -1,0 +1,6 @@
+---
+-name: "Enable UFW"
+ cammunity.general.ufw:
+ state: "enabled"
+ policy: "deny"
+

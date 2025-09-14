@@ -1,0 +1,40 @@
+
+---
+- name: "Task 1: Update APT package cache"
+  ansible.builtin.apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: "Task 2: Install common packages"
+  ansible.builtin.apt:
+    name:
+      - curl
+      - git
+      - ufw
+    state: present
+
+- name: "Task 3: Configure and enable UFW firewall"
+  ansible.builtin.ufw:
+    rule: allow
+    port: "{{ item }}"
+  loop:
+    - "22"
+    - "80"
+    - "443"
+  notify: "Enable UFW"
+  when: "ansible_distribution == 'Ubuntu'"
+
+- name: "Task 4: Create a dedicated application user"
+  ansible.builtin.user:
+    name: "app_user"
+    comment: "Application User"
+    shell: "/bin/bash"
+    groups: "sudo"
+    append: yes
+    state: present
+
+- name: "Task 5: Add SSH public key for app_user"
+  ansible.builtin.authorized_key:
+    user: "app_user"
+    state: present
+    key: "{{ app_user_ssh_key }}"
